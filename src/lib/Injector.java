@@ -18,15 +18,15 @@ public class Injector {
         Field[] consoleHandlerFields = consoleHandlerClass.getDeclaredFields();
 
         for (Field field : consoleHandlerFields) {
-            String nameClass = field.getType().getName().replace("dao.", "");
+            String typeField = field.getType().toString();
 
-            if (nameClass.equalsIgnoreCase("betdao")
+            if (typeField.equalsIgnoreCase("interface dao.BetDao")
                     && betDaoImplClass.getDeclaredAnnotation(Dao.class) != null
                     && field.getDeclaredAnnotation(Inject.class) != null) {
                 field.setAccessible(true);
                 field.set(null, BetDaoFactory.getBetDao());
                 field.setAccessible(false);
-            } else if (nameClass.equalsIgnoreCase("humandao")
+            } else if (typeField.equalsIgnoreCase("interface dao.HumanDao")
                     && humanDaoClass.getDeclaredAnnotation(Dao.class) != null
                     && field.getDeclaredAnnotation(Inject.class) != null) {
                 field.setAccessible(true);
