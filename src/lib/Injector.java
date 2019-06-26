@@ -1,7 +1,9 @@
 package lib;
 
 import controller.ConsoleHandler;
+import dao.BetDao;
 import dao.BetDaoImpl;
+import dao.HumanDao;
 import dao.HumanDaoImpl;
 import factory.BetDaoFactory;
 import factory.HumanDaoFactory;
@@ -18,15 +20,13 @@ public class Injector {
         Field[] consoleHandlerFields = consoleHandlerClass.getDeclaredFields();
 
         for (Field field : consoleHandlerFields) {
-            String typeField = field.getType().toString();
-
-            if (typeField.equalsIgnoreCase("interface dao.BetDao")
+            if (field.getType().equals(BetDao.class)
                     && betDaoImplClass.getDeclaredAnnotation(Dao.class) != null
                     && field.getDeclaredAnnotation(Inject.class) != null) {
                 field.setAccessible(true);
                 field.set(null, BetDaoFactory.getBetDao());
                 field.setAccessible(false);
-            } else if (typeField.equalsIgnoreCase("interface dao.HumanDao")
+            } else if (field.getType().equals(HumanDao.class)
                     && humanDaoClass.getDeclaredAnnotation(Dao.class) != null
                     && field.getDeclaredAnnotation(Inject.class) != null) {
                 field.setAccessible(true);
